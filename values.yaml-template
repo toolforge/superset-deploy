@@ -49,8 +49,7 @@ configOverrides:
             logging.debug("Wikimedia user info: %r", me)
             return {
                 "username": me.get("username"),
-                "email": me.get("email"),
-                "fullname": me.get("realname"),
+                "first_name": me.get("username"),
             }
 
     CUSTOM_SECURITY_MANAGER = MediaWikiSsoSecurityManager
