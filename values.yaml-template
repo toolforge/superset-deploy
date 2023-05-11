@@ -1,0 +1,69 @@
+service:
+  type: NodePort
+  nodePort:
+    http: 30665
+bootstrapScript: |
+  #!/bin/bash
+  pip install authlib
+
+
+configOverrides:
+  enable_oauth: |
+    from flask_appbuilder.security.manager import AUTH_OAUTH
+    
+    # make http https for request_uri
+    ENABLE_PROXY_FIX = True
+
+    # Set the authentication type to OAuth
+    AUTH_TYPE = AUTH_OAUTH
+    
+    OAUTH_PROVIDERS = [
+        {
+            'name':'mediawiki',
+            'icon':'fa-wikipedia-w',
+            'token_key':'access_token',
+            'remote_app': {
+                # auth only callback mediawiki gives email and realname
+                'client_id':'0c0ca9df92d6da2683a84dc2efc72640',
+                'client_secret':'${OAUTH_SECRET}',
+                'client_kwargs':{
+                    'scope': 'mwoauth-authonlyprivate'
+                },
+                'api_base_url':'https://meta.wikimedia.org/w/rest.php',
+                'access_token_url':'https://meta.wikimedia.org/w/rest.php/oauth2/access_token',
+                'authorize_url':'https://meta.wikimedia.org/w/rest.php/oauth2/authorize',
+            },
+        },
+    ]
+    
+    # Custom callback to fetch user information following OAuth2 handshake
+    import logging
+    from superset.security import SupersetSecurityManager
+
+    class MediaWikiSsoSecurityManager(SupersetSecurityManager):
+        def oauth_user_info(self, provider, response=None):
+            """Retrieve OAuth user information from MediaWiki."""
+            logging.debug("OAuth2 provider: %s", provider)
+            remote = self.appbuilder.sm.oauth_remotes[provider]
+            me = remote.get("/w/rest.php/oauth2/resource/profile").json()
+            logging.debug("Wikimedia user info: %r", me)
+            return {
+                "username": me.get("username"),
+                "email": me.get("email"),
+                "fullname": me.get("realname"),
+            }
+
+    CUSTOM_SECURITY_MANAGER = MediaWikiSsoSecurityManager
+
+    # Will allow user self registration, allowing to create Flask users from
+    # Authorized User
+    AUTH_USER_REGISTRATION = True
+    
+    # The default user self registration role
+    AUTH_USER_REGISTRATION_ROLE = "Gamma"
+    #AUTH_USER_REGISTRATION_ROLE = "Public"
+
+    # Map Authlib roles to superset roles
+    AUTH_ROLE_ADMIN = 'Admin'
+    AUTH_ROLE_PUBLIC = 'Public'
+

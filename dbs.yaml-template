@@ -1,0 +1,27 @@
+extraConfigs:
+  import_datasources.yaml: |
+    databases:
+    - database_name: s1
+      password: ${REPLICA_PASS}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s1.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s2
+      password: ${REPLICA_PASS}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s2.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s3
+      password: ${REPLICA_PASS}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s3.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s4
+      password: ${REPLICA_PASS}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s4.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s5
+      password: ${REPLICA_PASS}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s5.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s6
+      password: ${REPLICA_PASS}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s6.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s7
+      password: ${REPLICA_PASS}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s7.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s8
+      password: ${REPLICA_PASS}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s8.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
