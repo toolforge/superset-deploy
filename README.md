@@ -73,11 +73,3 @@ kubectl cp ./db.tar default/superset-postgresql-0:tmp/db.tar
 kubectl exec -it pod/superset-postgresql-0 -- bash
 pg_restore -c -U superset -F t -d superset /tmp/db.tar
 ```
-
-
-The DB list was generated in Quarry by BStorm (WMF) running:
-(https://quarry.wmcloud.org/query/53805)
-select dbname from wiki;
-against meta_p
-
-We may want to run this again on installs or daily? DBs may not be added quickly enough for automation to be really needed, as a ticket can be opened to add a new DB as well.
