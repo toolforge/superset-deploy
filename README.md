@@ -58,6 +58,9 @@ The gamma role needs two permissions added:
 all database access on all_database_access
 can sql json on Superset
 can my queries on SqlLab
+menu access on SQL Lab
+
+^^ actually we need to figure out how to add sql_lab role to all users
 
 
 # To backup and restore the db:
