@@ -59,10 +59,10 @@ configOverrides:
     AUTH_USER_REGISTRATION = True
     
     # The default user self registration role
-    AUTH_USER_REGISTRATION_ROLE = "Gamma"
-    #AUTH_USER_REGISTRATION_ROLE = "Public"
+    AUTH_USER_REGISTRATION_ROLE = "${AUTH_ROLE}"
 
     # Map Authlib roles to superset roles
     AUTH_ROLE_ADMIN = 'Admin'
     AUTH_ROLE_PUBLIC = 'Public'
 
+    SQLALCHEMY_DATABASE_URI = 'mysql://superset:${DB_PASS}@zm3pyfbwuoe.svc.trove.eqiad1.wikimedia.cloud/superset'

@@ -44,7 +44,7 @@ parameters:
 
 
 # When k8s is setup, start here
-To install run `install.sh`
+To install run `deploy.sh install`
 After that there is some configuration that is still run manually:
 
 Login with your user and then modify the database to make yourself an admin
@@ -58,15 +58,9 @@ Create OAuth role:
 copy Alpha role, then add:
 can sql json on Superset
 menu access on SQL Lab
+all query access on all_query_access
 
-The gamma role needs two permissions added:
-all database access on all_database_access
-can sql json on Superset
-can my queries on SqlLab
-menu access on SQL Lab
-
-^^ actually we need to figure out how to add sql_lab role to all users
-
+`deploy.sh upgrade` # One has to run the upgrade, after finishing the manual steps
 
 # To backup and restore the db:
 ```
