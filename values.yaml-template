@@ -65,4 +65,4 @@ configOverrides:
     AUTH_ROLE_ADMIN = 'Admin'
     AUTH_ROLE_PUBLIC = 'Public'
 
-    SQLALCHEMY_DATABASE_URI = 'mysql://superset:${DB_PASS}@jidark24ypt.svc.trove.eqiad1.wikimedia.cloud/superset'
+    SQLALCHEMY_DATABASE_URI = 'mysql://superset:${DB_PASS}@uuv7yi2cr62.svc.trove.eqiad1.wikimedia.cloud/superset'
