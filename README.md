@@ -54,6 +54,11 @@ PGPASSWORD=superset psql -Usuperset
 update ab_user_role set role_id=1 where id=(select id from ab_user where username='VRook (WMF)');
 ```
 
+Create OAuth role:
+copy Alpha role, then add:
+can sql json on Superset
+menu access on SQL Lab
+
 The gamma role needs two permissions added:
 all database access on all_database_access
 can sql json on Superset
