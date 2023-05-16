@@ -64,11 +64,8 @@ all query access on all_query_access
 
 # To backup and restore the db:
 ```
-kubectl exec -it pod/superset-postgresql-0 -- bash
-pg_dump --username=superset superset -F t > /tmp/db.tar
-password=superset
-kubectl cp default/superset-postgresql-0:tmp/db.tar ./db.tar
-kubectl cp ./db.tar default/superset-postgresql-0:tmp/db.tar
-kubectl exec -it pod/superset-postgresql-0 -- bash
-pg_restore -c -U superset -F t -d superset /tmp/db.tar
+mysqldump -h <original db hostname> -u superset -p superset > superset.backup
+mysql -u superset -h <new db hostname> -p superset < superset.backup
+# update values.yaml-template with new hostname
+bash deploy.sh upgrade
 ```
