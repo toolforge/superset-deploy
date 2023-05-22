@@ -19,4 +19,4 @@ source secrets.sh
 envsubst < dbs.yaml-template > dbs.yaml
 envsubst < values.yaml-template > values.yaml
 
-helm ${1} superset superset/superset -f values.yaml -f dbs.yaml
+helm ${1} superset superset/superset -f values.yaml -f dbs.yaml --version 0.10.0

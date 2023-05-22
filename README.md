@@ -63,6 +63,12 @@ all query access on all_query_access
 `deploy.sh upgrade` # One has to run the upgrade, after finishing the manual steps
 
 # To backup and restore the db:
+in Horizon create a new trove database:
+Volume Size: 8
+Datastore: mysql 5.7.29
+Flavor: g3.cores2.ram4.disk20
+Initial Databases: superset
+Initial Admin User: superset
 ```
 mysqldump -h <original db hostname> -u superset -p superset > superset.backup
 mysql -u superset -h <new db hostname> -p superset < superset.backup
