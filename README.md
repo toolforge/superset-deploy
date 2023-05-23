@@ -75,3 +75,6 @@ mysql -u superset -h <new db hostname> -p superset < superset.backup
 # update values.yaml-template with new hostname
 bash deploy.sh upgrade
 ```
+
+# Upgrade notes
+The OAuth role won't update on an upgrade. However the Alpha role and sql_lab roles (Of which OAuth is largely the union of) may change. Looking for differences between OAuth and the union of Alpha and sql_lab roles may be the solution to new permissions problems.
