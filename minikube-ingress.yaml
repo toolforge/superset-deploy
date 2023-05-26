@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: superset-minikube
+  namespace: default
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: superset.local
+    http:
+      paths:
+      - backend:
+          service:
+            name: superset
+            port:
+              number: 8088
+        path: /
+        pathType: Prefix
