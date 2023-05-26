@@ -9,6 +9,9 @@ bootstrapScript: |
 
 configOverrides:
   enable_oauth: |
+    admin_users = [
+        "VRook (WMF)",
+    ]
     from flask_appbuilder.security.manager import AUTH_OAUTH
     
     # make http https for request_uri
@@ -47,22 +50,29 @@ configOverrides:
             remote = self.appbuilder.sm.oauth_remotes[provider]
             me = remote.get("/w/rest.php/oauth2/resource/profile").json()
             logging.debug("Wikimedia user info: %r", me)
-            return {
-                "username": me.get("username"),
-                "first_name": me.get("username"),
-            }
+            if me.get("username") in admin_users:
+                logging.debug("admin user")
+                return {
+                    "role_keys": ["ADMINS"],
+                    "username": me.get("username"),
+                    "first_name": me.get("username"),
+                }
+            else:
+                return {
+                    "role_keys": ["USERS"],
+                    "username": me.get("username"),
+                    "first_name": me.get("username"),
+                }
+
+    AUTH_ROLES_MAPPING = {
+        "ADMINS": ["Admin"],
+        "USERS": ["Alpha","sql_lab","OAuth"],
+    }
 
     CUSTOM_SECURITY_MANAGER = MediaWikiSsoSecurityManager
 
     # Will allow user self registration, allowing to create Flask users from
     # Authorized User
     AUTH_USER_REGISTRATION = True
-    
-    # The default user self registration role
-    AUTH_USER_REGISTRATION_ROLE = "${AUTH_ROLE}"
-
-    # Map Authlib roles to superset roles
-    AUTH_ROLE_ADMIN = 'Admin'
-    AUTH_ROLE_PUBLIC = 'Public'
 
     SQLALCHEMY_DATABASE_URI = 'mysql://superset:${DB_PASS}@2xopzht2475.svc.trove.eqiad1.wikimedia.cloud/superset'
