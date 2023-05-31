@@ -1,12 +1,7 @@
 #!/bin/bash
 
-if [ "${1}" = "install" ]
+if [ -z "${1}" ]
 then
-    export AUTH_ROLE='Gamma'
-elif [ "${1}" = "upgrade" ]
-then
-    export AUTH_ROLE='OAuth'
-else
     echo "usage:"
     echo "${0} <install|upgrade>"
     exit

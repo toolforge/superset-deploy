@@ -42,25 +42,11 @@ parameters:
 `kubectl apply -f sc.yaml`
 
 
-
 # When k8s is setup, start here
 To install run `deploy.sh install`
-After that there is some configuration that is still run manually:
-
-Login with your user and then modify the database to make yourself an admin
-```
-kubectl exec -it pod/superset-postgresql-0 -- bash
-PGPASSWORD=superset psql -Usuperset
-update ab_user_role set role_id=1 where id=(select id from ab_user where username='VRook (WMF)');
-```
 
 Create OAuth role:
-copy Alpha role, then add:
-can sql json on Superset
-menu access on SQL Lab
 all query access on all_query_access
-
-`deploy.sh upgrade` # One has to run the upgrade, after finishing the manual steps
 
 # To backup and restore the db:
 in Horizon create a new trove database:
@@ -90,7 +76,6 @@ in values.yaml edit client_id to be 13067ed55ce2a4633af67dfffead4cb3 and client_
                 'client_id':'13067ed55ce2a4633af67dfffead4cb3',
                 'client_secret':'7079a6a2894554f2575fc173814713fcee498716',
 ```
-Set AUTH_USER_REGISTRATION_ROLE to Admin
 Remove the SQLALCHEMY_DATABASE_URI at the end of the file
 ```
 minikube addons enable ingress
