@@ -1,3 +1,7 @@
 values.yaml
 dbs.yaml
 *.swp
+.terraform*
+terraform/kube.config
+terraform.tfstate
+terraform.tfstate.backup
