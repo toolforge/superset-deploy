@@ -1,8 +1,8 @@
-# if k8s isn't setup, start here
+# if infrastructure isn't setup, start here
 ## from an openstack control node:
-export OS_PROJECT_ID=superset
-openstack coe cluster create superset --cluster-template k8s23 --master-count 1 --node-count 2
-
+cd terraform
+terraform init
+terraform apply -var datacenter="eqiad1"
 
 ## from local:
 `git clone https://github.com/kubernetes/cloud-provider-openstack.git`
