@@ -1,17 +1,27 @@
 #!/bin/bash
 
-if [ -z "${1}" ]
-then
-    echo "usage:"
-    echo "${0} <install|upgrade>"
-    exit
+set -e
+datacenter='eqiad1'
+
+
+if ! command -v kubectl ; then
+  echo "please install kubectl"
+  exit 1
 fi
 
-helm repo add superset https://apache.github.io/superset
+if ! command -v terraform ; then
+  echo "please install terraform"
+  exit 1
+fi
 
-source secrets.sh
+python3 -m venv .venv/deploy
+source .venv/deploy/bin/activate
+pip install ansible==8.1.0 kubernetes==26.1.0
 
-envsubst < dbs.yaml-template > dbs.yaml
-envsubst < values.yaml-template > values.yaml
+cd terraform
+terraform init
+terraform apply -var datacenter=${datacenter}  # -auto-approve
+export KUBECONFIG=$(pwd)/kube.config
 
-helm ${1} superset superset/superset -f values.yaml -f dbs.yaml --version 0.10.0
+cd ../ansible
+ansible-playbook superset-deploy.yaml --extra-vars "datacenter=${datacenter}"
