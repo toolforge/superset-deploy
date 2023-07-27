@@ -1,54 +1,22 @@
-# if infrastructure isn't setup, start here
-## from an openstack control node:
+### Deploy
+## from the superset bastion node:
 cd terraform
 terraform init
-terraform apply -var datacenter="eqiad1"
+terraform apply -var datacenter="<codfw1dev|eqiad1>"
 
-## from local:
-`git clone https://github.com/kubernetes/cloud-provider-openstack.git`
-
-cloud.conf:
-```
-[Global]
-application-credential-id = ${APPLICATION_CRED_ID}
-application-credential-secret = ${APPLICATION_CRED_SECRET}
-domain-name = default
-auth-url = https://openstack.eqiad1.wikimediacloud.org:25000/v3
-tenant-id = superset
-region = eqiad1-r
-```
-
-```
-cd cloud-provider-openstack
-base64 -w 0 ../cloud.conf ; echo
-vim manifests/cinder-csi-plugin/csi-secret-cinderplugin.yaml # replace cloud.conf 64 with above
-kubectl create -f manifests/cinder-csi-plugin/csi-secret-cinderplugin.yaml
-kubectl -f manifests/cinder-csi-plugin/ apply
-```
-
-sc.yaml:
-```
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: standard
-  annotations:
-    storageclass.kubernetes.io/is-default-class: "true"
-provisioner: cinder.csi.openstack.org
-parameters:
-  availability: nova
-```
-
-`kubectl apply -f sc.yaml`
-
+if a new database was created update currentDb and oldDB values in ansible/vars/eqiad1.yaml
 
 # When k8s is setup, start here
-To install run `deploy.sh install`
+To install run `deploy.sh <codfw1dev|eqiad1> [migrate]`
 
-Create OAuth role:
+## Disaster recovery deploy
+after deploy.sh Create OAuth role:
 all query access on all_query_access
 
-# To backup and restore the db:
+# To migrate the db:
+`deploy.sh <codfw1dev|eqiad1> migrate`
+
+# manual db backup and restore:
 in Horizon create a new trove database:
 Volume Size: 8
 Datastore: mysql 5.7.29

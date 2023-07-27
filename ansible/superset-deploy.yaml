@@ -4,17 +4,11 @@
   gather_facts: false
   hosts: localhost
   tasks:
-    - name: Touch a file
-      ansible.builtin.file:
-        path: /root/touchfile
-        state: touch
-
-- name: Deploy superset to k8s cluster
-  gather_facts: false
-  hosts: localhost
-  tasks:
     - name: include env vars
       include_vars: vars/{{ datacenter }}.yaml
+
+    - name: include secret env vars
+      include_vars: vars/{{ datacenter }}-secrets.yaml
 
     - name: Temporary directory for cloud provider
       ansible.builtin.tempfile:
@@ -58,3 +52,18 @@
       kubernetes.core.k8s:
         state: present
         src: "files/sc.yaml"
+
+#    - name: Add superset chart repo
+#      kubernetes.core.helm_repository:
+#        name: superset
+#        repo_url: "https://apache.github.io/superset"
+
+    - name: Deploy superset
+      kubernetes.core.helm:
+        name: superset
+        chart_repo_url: "https://apache.github.io/superset"
+        chart_ref: superset
+        chart_version: 0.10.0
+        release_namespace: default
+        values: "{{ lookup('template', 'templates/values.yaml.j2') | from_yaml }}"
+        #dependency_update: true
