@@ -1,0 +1,69 @@
+---
+
+- name: Deploy superset to k8s cluster
+  gather_facts: false
+  hosts: localhost
+  tasks:
+    - name: include env vars
+      include_vars: vars/{{ datacenter }}.yaml
+
+    - name: include secret env vars
+      include_vars: vars/{{ datacenter }}-secrets.yaml
+
+    - name: Temporary directory for cloud provider
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: cloud
+      register: cloud_dir
+      changed_when: False
+
+    - name: Clone cloud-provider-openstack
+      ansible.builtin.git:
+        repo: https://github.com/kubernetes/cloud-provider-openstack.git
+        dest: "{{ cloud_dir.path }}"
+        version: v1.26.3
+      changed_when: False
+
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: files/csi-secret-cinderplugin.yaml.{{ datacenter }}.crypt
+        dest: "{{ cloud_dir.path }}/manifests/cinder-csi-plugin/csi-secret-cinderplugin.yaml"
+      changed_when: False
+
+    - name: install the things!
+      kubernetes.core.k8s:
+        state: present
+        src: "{{ cloud_dir.path }}/manifests/cinder-csi-plugin/{{ item }}"
+      loop:
+        - "csi-secret-cinderplugin.yaml"
+        - "cinder-csi-controllerplugin-rbac.yaml"
+        - "cinder-csi-controllerplugin.yaml"
+        - "cinder-csi-nodeplugin-rbac.yaml"
+        - "cinder-csi-nodeplugin.yaml"
+        - "csi-cinder-driver.yaml"
+
+    - name: Delete temporary directory
+      ansible.builtin.file:
+        state: absent
+        path: "{{ cloud_dir.path }}"
+      changed_when: False
+
+    - name: and sc.yaml
+      kubernetes.core.k8s:
+        state: present
+        src: "files/sc.yaml"
+
+#    - name: Add superset chart repo
+#      kubernetes.core.helm_repository:
+#        name: superset
+#        repo_url: "https://apache.github.io/superset"
+
+    - name: Deploy superset
+      kubernetes.core.helm:
+        name: superset
+        chart_repo_url: "https://apache.github.io/superset"
+        chart_ref: superset
+        chart_version: 0.10.0
+        release_namespace: default
+        values: "{{ lookup('template', 'templates/values.yaml.j2') | from_yaml }}"
+        #dependency_update: true

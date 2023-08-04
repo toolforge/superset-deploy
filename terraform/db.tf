@@ -1,11 +1,11 @@
 resource "openstack_db_instance_v1" "superset" {
   region    = var.region[var.datacenter]
-  name      = "superset-tf"
-  flavor_id = "bb8bee7e-d8f9-460b-8344-74f745c139b9"
-  size      = 4
+  name      = "superset${var.name[var.datacenter]}"
+  flavor_id = var.db_flavor_uuid[var.datacenter]
+  size      = var.db_size[var.datacenter]
 
   network {
-    uuid = "7425e328-560c-4f00-8e99-706f3fb90bb4"
+    uuid = var.network_uuid[var.datacenter]
   }
 
   user {

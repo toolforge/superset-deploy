@@ -27,8 +27,8 @@ configOverrides:
             'token_key':'access_token',
             'remote_app': {
                 # auth only callback mediawiki gives email and realname
-                'client_id':'0c0ca9df92d6da2683a84dc2efc72640',
-                'client_secret':'${OAUTH_SECRET}',
+                'client_id':'{{ oauthClient }}',
+                'client_secret':'{{ oauthSecret }}',
                 'client_kwargs':{
                     'scope': 'mwoauth-authonlyprivate'
                 },
@@ -75,4 +75,32 @@ configOverrides:
     # Authorized User
     AUTH_USER_REGISTRATION = True
 
-    SQLALCHEMY_DATABASE_URI = 'mysql://superset:${DB_PASS}@2xopzht2475.svc.trove.eqiad1.wikimedia.cloud/superset'
+    SQLALCHEMY_DATABASE_URI = 'mysql://superset:{{ dbPass }}@{{ currentDb }}/superset'
+
+extraConfigs:
+  import_datasources.yaml: |
+    databases:
+    - database_name: s1
+      password: {{ replicaPass }}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s1.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s2
+      password: {{ replicaPass }}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s2.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s3
+      password: {{ replicaPass }}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s3.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s4
+      password: {{ replicaPass }}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s4.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s5
+      password: {{ replicaPass }}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s5.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s6
+      password: {{ replicaPass }}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s6.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s7
+      password: {{ replicaPass }}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s7.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+    - database_name: s8
+      password: {{ replicaPass }}
+      sqlalchemy_uri: mysql+mysqldb://s52788@s8.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1

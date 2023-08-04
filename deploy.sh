@@ -1,17 +1,54 @@
 #!/bin/bash
 
-if [ -z "${1}" ]
+set -e
+
+migrate='false'
+
+if [ "${1}" = 'eqiad1' ]
 then
-    echo "usage:"
-    echo "${0} <install|upgrade>"
-    exit
+  datacenter=${1}
+elif [ "${1}" = 'codfw1dev' ]
+then
+  datacenter=${1}
+else
+  echo "Please enter datacenter."
+  echo "Usage:"
+  echo "${0} <eqiad1|codfw1dev>"
+  exit
 fi
 
-helm repo add superset https://apache.github.io/superset
+if [ "${2}" = 'migrate' ]
+then
+  migrate='true'
+fi
 
-source secrets.sh
 
-envsubst < dbs.yaml-template > dbs.yaml
-envsubst < values.yaml-template > values.yaml
+if ! command -v kubectl ; then
+  echo "please install kubectl"
+  exit 1
+fi
 
-helm ${1} superset superset/superset -f values.yaml -f dbs.yaml --version 0.10.0
+if ! command -v helm ; then
+  echo "please install helm"
+  exit 1
+fi
+
+if ! command -v mysqldump ; then
+  echo "please install mariadb-client"
+  exit 1
+fi
+
+python3 -m venv .venv/deploy
+source .venv/deploy/bin/activate
+pip install ansible==8.1.0 kubernetes==26.1.0 PyMySQL==1.1.0
+
+export KUBECONFIG=$(pwd)/terraform/kube.config
+
+cd ansible
+ansible-playbook superset-deploy.yaml --extra-vars "datacenter=${datacenter}"
+
+if [ "${migrate}" = 'true' ]
+then
+  echo "migrating!"
+  ansible-playbook db-migrate.yaml --extra-vars "datacenter=${datacenter}"
+fi

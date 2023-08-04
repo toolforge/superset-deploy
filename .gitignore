@@ -5,3 +5,4 @@ dbs.yaml
 terraform/kube.config
 terraform.tfstate
 terraform.tfstate.backup
+.env/
