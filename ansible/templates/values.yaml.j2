@@ -75,32 +75,38 @@ configOverrides:
     # Authorized User
     AUTH_USER_REGISTRATION = True
 
-    SQLALCHEMY_DATABASE_URI = 'mysql://superset:{{ dbPass }}@{{ currentDb }}/superset'
-
 extraConfigs:
   import_datasources.yaml: |
     databases:
     - database_name: s1
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s1.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true
     - database_name: s2
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s2.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true
     - database_name: s3
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s3.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true
     - database_name: s4
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s4.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true
     - database_name: s5
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s5.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true
     - database_name: s6
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s6.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true
     - database_name: s7
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s7.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true
     - database_name: s8
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s8.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true

@@ -33,11 +33,6 @@ if ! command -v helm ; then
   exit 1
 fi
 
-if ! command -v mysqldump ; then
-  echo "please install mariadb-client"
-  exit 1
-fi
-
 python3 -m venv .venv/deploy
 source .venv/deploy/bin/activate
 pip install ansible==8.1.0 kubernetes==26.1.0 PyMySQL==1.1.0

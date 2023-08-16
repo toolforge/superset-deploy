@@ -14,7 +14,18 @@ after deploy.sh Create OAuth role:
 all query access on all_query_access
 
 # To migrate the db:
-`deploy.sh <codfw1dev|eqiad1> migrate`
+```
+export KUBECONFIG=<path/to/old/kubeconfig>
+kubectl exec -it pod/superset-postgresql-0 -- bash
+pg_dump --username=superset superset -F t > /tmp/db.tar
+
+kubectl cp default/superset-postgresql-0:tmp/db.tar ./db.tar
+export KUBECONFIG=<path/to/new/kubeconfig>
+kubectl cp ./db.tar default/superset-postgresql-0:tmp/db.tar
+kubectl exec -it pod/superset-postgresql-0 -- bash
+pg_restore -c -U superset -F t -d superset /tmp/db.tar
+```
+
 
 # manual db backup and restore:
 in Horizon create a new trove database:
