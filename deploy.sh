@@ -2,8 +2,6 @@
 
 set -e
 
-migrate='false'
-
 if [ "${1}" = 'eqiad1' ]
 then
   datacenter=${1}
@@ -16,12 +14,6 @@ else
   echo "${0} <eqiad1|codfw1dev>"
   exit
 fi
-
-if [ "${2}" = 'migrate' ]
-then
-  migrate='true'
-fi
-
 
 if ! command -v kubectl ; then
   echo "please install kubectl"
@@ -41,9 +33,3 @@ export KUBECONFIG=$(pwd)/terraform/kube.config
 
 cd ansible
 ansible-playbook superset-deploy.yaml --extra-vars "datacenter=${datacenter}"
-
-if [ "${migrate}" = 'true' ]
-then
-  echo "migrating!"
-  ansible-playbook db-migrate.yaml --extra-vars "datacenter=${datacenter}"
-fi
