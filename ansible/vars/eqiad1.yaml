@@ -1,4 +1,5 @@
 ---
 
-currentDb: 3paubms4bt4.svc.trove.eqiad1.wikimedia.cloud
-oldDb: 2xopzht2475.svc.trove.eqiad1.wikimedia.cloud
+#currentDb: 3paubms4bt4.svc.trove.eqiad1.wikimedia.cloud
+currentDb: 2xopzht2475.svc.trove.eqiad1.wikimedia.cloud
+#oldDb: 2xopzht2475.svc.trove.eqiad1.wikimedia.cloud
