@@ -4,30 +4,24 @@ cd terraform
 terraform init
 terraform apply -var datacenter="<codfw1dev|eqiad1>"
 
-if a new database was created update currentDb and oldDB values in ansible/vars/eqiad1.yaml
-
 # When k8s is setup, start here
-To install run `deploy.sh <codfw1dev|eqiad1> [migrate]`
+To install run `deploy.sh <codfw1dev|eqiad1>`
 
 ## Disaster recovery deploy
 after deploy.sh Create OAuth role:
 all query access on all_query_access
 
 # To migrate the db:
-`deploy.sh <codfw1dev|eqiad1> migrate`
-
-# manual db backup and restore:
-in Horizon create a new trove database:
-Volume Size: 8
-Datastore: mysql 5.7.29
-Flavor: g3.cores2.ram4.disk20
-Initial Databases: superset
-Initial Admin User: superset
 ```
-mysqldump -h <original db hostname> -u superset -p superset > superset.backup
-mysql -u superset -h <new db hostname> -p superset < superset.backup
-# update values.yaml-template with new hostname
-bash deploy.sh upgrade
+export KUBECONFIG=<path/to/old/kubeconfig>
+kubectl exec -it pod/superset-postgresql-0 -- bash
+pg_dump --username=superset superset -F t > /tmp/db.tar
+
+kubectl cp default/superset-postgresql-0:tmp/db.tar ./db.tar
+export KUBECONFIG=<path/to/new/kubeconfig>
+kubectl cp ./db.tar default/superset-postgresql-0:tmp/db.tar
+kubectl exec -it pod/superset-postgresql-0 -- bash
+pg_restore -c -U superset -F t -d superset /tmp/db.tar
 ```
 
 # Upgrade notes

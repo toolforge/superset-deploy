@@ -2,8 +2,6 @@
 
 set -e
 
-migrate='false'
-
 if [ "${1}" = 'eqiad1' ]
 then
   datacenter=${1}
@@ -17,12 +15,6 @@ else
   exit
 fi
 
-if [ "${2}" = 'migrate' ]
-then
-  migrate='true'
-fi
-
-
 if ! command -v kubectl ; then
   echo "please install kubectl"
   exit 1
@@ -30,11 +22,6 @@ fi
 
 if ! command -v helm ; then
   echo "please install helm"
-  exit 1
-fi
-
-if ! command -v mysqldump ; then
-  echo "please install mariadb-client"
   exit 1
 fi
 
@@ -46,9 +33,3 @@ export KUBECONFIG=$(pwd)/terraform/kube.config
 
 cd ansible
 ansible-playbook superset-deploy.yaml --extra-vars "datacenter=${datacenter}"
-
-if [ "${migrate}" = 'true' ]
-then
-  echo "migrating!"
-  ansible-playbook db-migrate.yaml --extra-vars "datacenter=${datacenter}"
-fi

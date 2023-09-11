@@ -4,9 +4,6 @@
   gather_facts: false
   hosts: localhost
   tasks:
-    - name: include env vars
-      include_vars: vars/{{ datacenter }}.yaml
-
     - name: include secret env vars
       include_vars: vars/{{ datacenter }}-secrets.yaml
 
