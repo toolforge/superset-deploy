@@ -1,21 +1,21 @@
-resource "openstack_containerinfra_cluster_v1" "k8s_123_1" {
-  name                = "superset${var.name[var.datacenter]}-123-1"
-  cluster_template_id = resource.openstack_containerinfra_clustertemplate_v1.template_123_1.id
+resource "openstack_containerinfra_cluster_v1" "k8s_123_2" {
+  name                = "superset${var.name[var.datacenter]}-123-2"
+  cluster_template_id = resource.openstack_containerinfra_clustertemplate_v1.template_123_2.id
   master_count        = 1
   node_count          = var.workers[var.datacenter]
 }
 
 resource "local_file" "kube_config" {
-  content  = resource.openstack_containerinfra_cluster_v1.k8s_123_1.kubeconfig.raw_config
+  content  = resource.openstack_containerinfra_cluster_v1.k8s_123_2.kubeconfig.raw_config
   filename = "kube.config"
 }
 
-resource "openstack_containerinfra_clustertemplate_v1" "template_123_1" {
-  name                  = "superset${var.name[var.datacenter]}-123-1"
+resource "openstack_containerinfra_clustertemplate_v1" "template_123_2" {
+  name                  = "superset${var.name[var.datacenter]}-123-2"
   coe                   = "kubernetes"
   dns_nameserver        = "8.8.8.8"
   docker_storage_driver = "overlay2"
-  docker_volume_size    = "20"
+  docker_volume_size    = "50"
   external_network_id   = var.external_network_id[var.datacenter]
   fixed_subnet          = var.fixed_subnet[var.datacenter]
   fixed_network         = var.fixed_network[var.datacenter]
