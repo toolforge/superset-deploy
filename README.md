@@ -1,8 +1,8 @@
 ### Deploy
 ## from the superset bastion node:
-cd terraform
-terraform init
-terraform apply -var datacenter="<codfw1dev|eqiad1>"
+cd tofu
+tofu init
+tofu apply -var datacenter="<codfw1dev|eqiad1>"
 
 # When k8s is setup, start here
 To install run `deploy.sh <codfw1dev|eqiad1>`
