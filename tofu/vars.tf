@@ -29,7 +29,7 @@ variable "tenant_id" {
 variable "application_credential_id" {
   type = map(any)
   default = {
-    "codfw1dev" = "6e40590c647e4fdf9d3cf644bfded71e" # removed
+    "codfw1dev" = "34e6012e4e0649e192b3b95dabb1621c"
     "eqiad1"    = "23d2deb4328447678b276de7516370c4"
   }
 }
