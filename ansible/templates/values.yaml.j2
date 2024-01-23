@@ -74,6 +74,7 @@ configOverrides:
     # Will allow user self registration, allowing to create Flask users from
     # Authorized User
     AUTH_USER_REGISTRATION = True
+    SECRET_KEY = '{{ secretKey }}'
 
 extraConfigs:
   import_datasources.yaml: |

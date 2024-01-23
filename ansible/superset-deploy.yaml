@@ -60,7 +60,7 @@
         name: superset
         chart_repo_url: "https://apache.github.io/superset"
         chart_ref: superset
-        chart_version: 0.10.0
+        chart_version: 0.12.0
         release_namespace: default
         values: "{{ lookup('template', 'templates/values.yaml.j2') | from_yaml }}"
         #dependency_update: true
