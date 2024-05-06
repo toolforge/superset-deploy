@@ -1,4 +1,5 @@
-ansible/vars/eqiad1-secrets.yaml filter=git-crypt diff=git-crypt
+ansible/vars/secrets-eqiad1.yaml filter=git-crypt diff=git-crypt
+ansible/vars/secrets-codfw1dev.yaml filter=git-crypt diff=git-crypt
 ansible/files/csi-plugin.yaml.eqiad1.crypt filter=git-crypt diff=git-crypt
 ansible/files/csi-plugin.yaml.codfw1dev.crypt filter=git-crypt diff=git-crypt
 tofu/secrets.tf filter=git-crypt diff=git-crypt

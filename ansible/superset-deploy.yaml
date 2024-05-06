@@ -5,7 +5,7 @@
   hosts: localhost
   tasks:
     - name: include secret env vars
-      include_vars: vars/{{ datacenter }}-secrets.yaml
+      include_vars: vars/secrets-{{ datacenter }}.yaml
 
     - name: Temporary directory for cloud provider
       ansible.builtin.tempfile:
