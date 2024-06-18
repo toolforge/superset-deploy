@@ -1,12 +1,12 @@
 resource "openstack_containerinfra_cluster_v1" "k8s_123_4" {
-  name                = "superset${var.name[var.datacenter]}-123-4"
+  name                = "superset${var.name[var.datacenter]}-123-6"
   cluster_template_id = resource.openstack_containerinfra_clustertemplate_v1.template_123_4.id
   master_count        = 1
   node_count          = var.workers[var.datacenter]
 }
 
-resource "openstack_containerinfra_clustertemplate_v1" "template_123_4" {
-  name                  = "superset${var.name[var.datacenter]}-123-4"
+resource "openstack_containerinfra_clustertemplate_v1" "template_123_6" {
+  name                  = "superset${var.name[var.datacenter]}-123-6"
   coe                   = "kubernetes"
   dns_nameserver        = "8.8.8.8"
   docker_storage_driver = "overlay2"
