@@ -5,7 +5,7 @@
   hosts: localhost
   tasks:
     - name: include secret env vars
-      include_vars: vars/{{ datacenter }}-secrets.yaml
+      include_vars: vars/secrets-{{ datacenter }}.yaml
 
     - name: Temporary directory for cloud provider
       ansible.builtin.tempfile:
@@ -23,7 +23,7 @@
 
     - name: Copy file with owner and permissions
       ansible.builtin.copy:
-        src: files/csi-secret-cinderplugin.yaml.{{ datacenter }}.crypt
+        src: files/csi-plugin.yaml.{{ datacenter }}.crypt
         dest: "{{ cloud_dir.path }}/manifests/cinder-csi-plugin/csi-secret-cinderplugin.yaml"
       changed_when: False
 
@@ -60,7 +60,7 @@
         name: superset
         chart_repo_url: "https://apache.github.io/superset"
         chart_ref: superset
-        chart_version: 0.12.7
+        chart_version: 0.12.9
         release_namespace: default
         values: "{{ lookup('template', 'templates/values.yaml.j2') | from_yaml }}"
         #dependency_update: true
