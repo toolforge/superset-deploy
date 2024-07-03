@@ -111,3 +111,7 @@ extraConfigs:
       password: {{ replicaPass }}
       sqlalchemy_uri: mysql+mysqldb://s52788@s8.analytics.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
       allow_run_async: true
+    - database_name: s55986__automod_metrics_p
+      password: {{ toolsdbPass }}
+      sqlalchemy_uri: mysql+mysqldb://superset_readonly@tools-readonly.db.svc.wikimedia.cloud:3306/information_schema?ssl=1
+      allow_run_async: true
