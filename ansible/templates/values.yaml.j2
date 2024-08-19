@@ -5,6 +5,9 @@ service:
 bootstrapScript: |
   #!/bin/bash
   pip install authlib
+postgresql:
+  auth:
+    postgresPassword: '{{ postgresPassword }}'
 
 
 configOverrides:
